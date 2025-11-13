@@ -1,49 +1,137 @@
-/* Estilização geral */
+/* Estilização geral (sem mudanças) */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     text-align: center;
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
 }
 
 h1 {
     color: #333;
+    margin-bottom: 30px;
 }
 
-/* Estilização dos botões de escolha */
+/* Botões de escolha (sem mudanças) */
+.opcoes {
+    margin-bottom: 30px; /* Reduzi um pouco a margem */
+}
 .opcoes button {
     border: 3px solid #555;
-    border-radius: 50%; /* Deixa os botões redondos */
+    border-radius: 50%;
     background-color: white;
     margin: 10px;
     padding: 10px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
+    outline: none;
 }
-
 .opcoes button:hover {
-    transform: scale(1.1); /* Efeito de zoom ao passar o mouse */
+    transform: scale(1.1);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
-
 .opcoes img {
-    width: 100px;  /* Tamanho das imagens */
+    width: 100px;
     height: 100px;
     display: block;
 }
 
-/* Estilização da área de resultado */
-.resultado {
-    margin-top: 30px;
+/* --- MUDANÇA: ESTILOS DA ÁREA DE RESULTADO --- */
+/* (Agora é um bloco separado, não mais um item flex) */
+.resultado-combate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    max-width: 900px;
+    margin-bottom: 20px; /* Espaço entre o placar e as mãos */
 }
 
-.resultado p {
-    font-size: 1.2em;
-}
-
-/* Mensagem final (Venceu, Perdeu, Empatou) */
 #mensagem-final {
-    margin-top: 20px;
-    font-size: 2em;
-    color: #4477aa; /* Um azul para destaque */
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultado-combate p {
+    font-size: 1.3em;
+    color: #555;
+    margin: 5px 0;
+}
+
+
+/* --- MUDANÇA: ESTILOS DA ÁREA DE COMBATE --- */
+.combate {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px; /* Espaço entre Jogador, X, e Computador */
+    width: 80%;
+    max-width: 900px;
+}
+
+/* Estilo do "X" no meio */
+.vs-texto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.vs-texto h1 {
+    font-size: 3.5em; /* Tamanho do X */
+    color: #999;
+    margin: 0;
+    font-weight: bold;
+}
+
+.jogador-area, .computador-area {
+    /* Usamos flex-basis para sugerir um tamanho e max-width para limitar */
+    flex-basis: 300px;
+    max-width: 300px;
+    flex-grow: 1; /* Permite crescer se houver espaço */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 5px solid transparent;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.jogador-area h2, .computador-area h2 {
+    color: #444;
+    margin-bottom: 15px;
+}
+
+/* --- MUDANÇA: TAMANHO DAS IMAGENS --- */
+.combate img {
+    width: 120px;  /* <<< DIMINUÍDO (era 150px) */
+    height: 120px; /* <<< DIMINUÍDO (era 150px) */
+    object-fit: contain;
+    background-color: #eee;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Esconder as imagens antes do jogo (sem mudanças) */
+#imagem-jogador, #imagem-computador {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Classe de vencedor (sem mudanças) */
+.vencedor {
+    border-color: #fdd835;
+    box-shadow: 0 0 25px #fdd835, 0 0 10px rgba(255, 255, 0, 0.7);
 }
