@@ -14,12 +14,16 @@ import java.util.Optional;
 public class UserController {
     UserService service;
 
-    @GetMapping("/users/{id}")
+    UserController(UserService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/users/id/{id}")
     public Optional<User> getUserById(@PathVariable long id) {
         return service.getUserById(id);
     }
 
-    @GetMapping("/users/{name}")
+    @GetMapping("/users/name/{name}")
     public Optional<User> getUserByName(@PathVariable String name) {
         return service.getUserByName(name);
     }

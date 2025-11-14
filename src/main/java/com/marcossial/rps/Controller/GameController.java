@@ -1,9 +1,8 @@
 package com.marcossial.rps.Controller;
 
-import com.marcossial.rps.Model.Choice;
+import com.marcossial.rps.DTO.GameRequest;
 import com.marcossial.rps.Model.Game;
 import com.marcossial.rps.Service.GameService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +15,13 @@ import java.util.List;
 public class GameController {
     GameService service;
 
+    GameController(GameService service) {
+        this.service = service;
+    }
+
     @PostMapping("/game")
-    public Game newGame(@RequestBody long userId, Choice userChoice) {
-        return service.newGame(userId, userChoice);
+    public Game newGame(@RequestBody GameRequest req) {
+        return service.newGame(req.getUserId(), req.getUserChoice());
     }
 
     @GetMapping("/users/{id}/games")
