@@ -1,4 +1,4 @@
-package com.marcossial.rps.Controller;
+package com.marcossial.rps.Controller.Api;
 
 import com.marcossial.rps.Model.User;
 import com.marcossial.rps.Service.UserService;

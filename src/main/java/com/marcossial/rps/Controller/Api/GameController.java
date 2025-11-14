@@ -1,4 +1,4 @@
-package com.marcossial.rps.Controller;
+package com.marcossial.rps.Controller.Api;
 
 import com.marcossial.rps.DTO.GameRequest;
 import com.marcossial.rps.Model.Game;
