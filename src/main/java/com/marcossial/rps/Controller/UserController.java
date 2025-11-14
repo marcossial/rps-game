@@ -29,7 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public User newUser(@RequestBody String name) {
-        return service.newUser(name);
+    public ResponseEntity<User> create(@RequestBody User user) {
+        User created = service.save(user);
+        return ResponseEntity.ok(created);
     }
 }

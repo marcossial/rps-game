@@ -16,8 +16,7 @@ public class UserService {
         this.repository = repository;
     }
 
-    public User newUser(String name) {
-        User user = new User(name, 0);
+    public User newUser(User user) {
         return repository.save(user);
     }
 
