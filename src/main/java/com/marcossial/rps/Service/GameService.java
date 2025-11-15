@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +35,10 @@ public class GameService {
 
         Game game = new Game(actualUser, userChoice, npcChoice, result);
         return gameRepository.save(game);
+    }
+
+    public Optional<Game> getGameById(Long id) {
+        return gameRepository.findById(id);
     }
 
     public List<Game> getUserHistory(Long userId) {

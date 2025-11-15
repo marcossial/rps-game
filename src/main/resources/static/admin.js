@@ -32,7 +32,7 @@ function renderTable(tableId, data, isGame) {
             row.insertCell().textContent = id;
 
             const userIdText = item.user ? item.user.id : (item.userId || 'N/A (Erro)');
-            row.insertCell().textContent = item.user.id;
+            row.insertCell().textContent = userIdText;
 
             row.insertCell().textContent = new Date(item.date).toLocaleString();
             row.insertCell().textContent = item.userChoice;
@@ -93,10 +93,15 @@ function renderUserTable(data) {
     });
 }
 
+function resetFilterAndFetchAll() {
+    currentUserId = null;
+    fetchGames();
+}
+
 function filterGamesByUser(userId, userName) {
-    currentUserId = userId; // Define o novo filtro
+    currentUserId = userId;
     document.getElementById('current-filter').innerHTML = `Filtro Atual: **${userName} (ID: ${userId})**`;
-    fetchGames(); // Recarrega os jogos com o filtro
+    fetchGames();
 }
 
 async function fetchUsers() {
@@ -116,7 +121,7 @@ async function fetchUsers() {
 
 async function fetchGames() {
     const endpoint = currentUserId 
-        ? `${API_URL}/game?users/${currentUserId}`
+        ? `${API_URL}/game/users/${currentUserId}`
         : `${API_URL}/game`;
         
     if (!currentUserId) {
