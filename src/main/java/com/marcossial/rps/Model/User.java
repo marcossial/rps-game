@@ -22,6 +22,8 @@ public class User {
         this.createdDate = LocalDateTime.now();
     }
 
+
+
     public User(String name, long score) {
         this.name = name;
         this.score = score;

@@ -13,7 +13,8 @@ import java.util.Map;
 
 @RequestMapping("/game")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+//@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 public class GameController {
     private final GameService service;
 

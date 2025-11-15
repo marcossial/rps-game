@@ -78,6 +78,10 @@ async function jogar(escolhaUsuario) {
         imagemJogador.style.opacity = 1;
         imagemComputador.style.opacity = 1;
 
+
+        // adicionar o imagem invertida
+        imagemComputador.classList.add('imagem-invertida');
+
         // Processa o resultado e atualiza o placar
         processarResultado(resultadoApi);
 
