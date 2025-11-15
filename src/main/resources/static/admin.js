@@ -1,12 +1,27 @@
-// admin.js
-
 const API_URL = 'http://localhost:8080';
+
+// --- NOVO: Função para exibir mensagens de status na tela ---
+
+function displayStatusMessage(message, type = 'success') {
+    const statusDiv = document.getElementById('status-message');
+    statusDiv.textContent = message;
+    
+    // Limpa classes anteriores e adiciona a nova
+    statusDiv.className = 'container';
+    statusDiv.classList.add(type, 'visible');
+    
+    // Oculta a mensagem após 5 segundos
+    setTimeout(() => {
+        statusDiv.classList.remove('visible');
+    }, 5000); 
+}
+
 
 // --- Função Auxiliar: Limpar e Criar Linhas da Tabela ---
 
 function renderTable(tableId, data, isGame) {
     const tbody = document.getElementById(tableId).querySelector('tbody');
-    tbody.innerHTML = ''; // Limpa o conteúdo anterior
+    tbody.innerHTML = ''; 
 
     if (!data || data.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7">Nenhum registro encontrado.</td></tr>';
@@ -20,7 +35,7 @@ function renderTable(tableId, data, isGame) {
         if (isGame) {
             // Colunas da tabela de Jogos
             row.insertCell().textContent = id;
-            row.insertCell().textContent = item.user.id; // Assume que a FK é retornada como 'user: { id: ... }'
+            row.insertCell().textContent = item.user.id;
             row.insertCell().textContent = new Date(item.date).toLocaleString();
             row.insertCell().textContent = item.userChoice;
             row.insertCell().textContent = item.npcChoice;
@@ -60,7 +75,7 @@ async function fetchUsers() {
         renderTable('user-table', users, false);
     } catch (error) {
         console.error("Erro ao buscar usuários:", error);
-        alert('Erro ao carregar usuários. Verifique o console.');
+        displayStatusMessage('Erro ao carregar usuários. Verifique o console.', 'error'); // ALTERADO
     }
 }
 
@@ -72,7 +87,7 @@ async function fetchGames() {
         renderTable('game-table', games, true);
     } catch (error) {
         console.error("Erro ao buscar jogos:", error);
-        alert('Erro ao carregar jogos. Verifique o console.');
+        displayStatusMessage('Erro ao carregar jogos. Verifique o console.', 'error'); // ALTERADO
     }
 }
 
@@ -89,9 +104,9 @@ async function deleteResource(resource, id) {
         });
 
         if (response.status === 204) { // 204 No Content
-            alert(`Recurso ID ${id} excluído com sucesso.`);
+            displayStatusMessage(`Recurso ID ${id} excluído com sucesso.`, 'success'); // ALTERADO
         } else if (response.status === 404) {
-            alert(`Recurso ID ${id} não encontrado.`);
+            displayStatusMessage(`Recurso ID ${id} não encontrado.`, 'error'); // ALTERADO
         } else {
             throw new Error(`Erro ${response.status} ao excluir.`);
         }
@@ -105,7 +120,7 @@ async function deleteResource(resource, id) {
 
     } catch (error) {
         console.error(`Erro ao deletar ${resource}:`, error);
-        alert(`Erro ao deletar: ${error.message}`);
+        displayStatusMessage(`Erro ao deletar: ${error.message}`, 'error'); // ALTERADO
     }
 }
 
@@ -115,7 +130,7 @@ async function deleteResource(resource, id) {
 async function createUser() {
     const name = document.getElementById('new-username').value;
     if (!name) {
-        alert('O nome do usuário é obrigatório.');
+        displayStatusMessage('O nome do usuário é obrigatório.', 'error'); // ALTERADO
         return;
     }
 
@@ -127,7 +142,7 @@ async function createUser() {
         });
 
         if (response.status === 201) {
-            alert(`Usuário "${name}" adicionado com sucesso.`);
+            displayStatusMessage(`Usuário "${name}" adicionado com sucesso.`, 'success'); // ALTERADO
             document.getElementById('new-username').value = '';
             fetchUsers();
         } else {
@@ -135,7 +150,7 @@ async function createUser() {
         }
     } catch (error) {
         console.error("Erro ao criar usuário:", error);
-        alert('Falha na criação do usuário. Verifique o console.');
+        displayStatusMessage('Falha na criação do usuário. Verifique o console.', 'error'); // ALTERADO
     }
 }
 
@@ -145,7 +160,7 @@ async function createGame() {
     const userChoice = document.getElementById('new-game-choice').value;
 
     if (!userId || !userChoice) {
-        alert('ID do jogador e escolha são obrigatórios.');
+        displayStatusMessage('ID do jogador e escolha são obrigatórios.', 'error'); // ALTERADO
         return;
     }
 
@@ -157,17 +172,17 @@ async function createGame() {
         });
 
         if (response.status === 201) {
-            alert(`Jogo para o User ID ${userId} adicionado com sucesso.`);
+            displayStatusMessage(`Jogo para o User ID ${userId} adicionado com sucesso.`, 'success'); // ALTERADO
             document.getElementById('new-game-user-id').value = '';
             fetchGames();
         } else {
              // Tratamento para 404/500 caso o usuário não exista no backend
             const errorText = await response.text();
-            alert(`Falha ao adicionar jogo. Status ${response.status}. Detalhes: ${errorText.substring(0, 100)}...`);
+            displayStatusMessage(`Falha ao adicionar jogo. Status ${response.status}. Detalhes: ${errorText.substring(0, 100)}...`, 'error'); // ALTERADO
         }
     } catch (error) {
         console.error("Erro ao criar jogo:", error);
-        alert('Falha na criação do jogo. Verifique o console.');
+        displayStatusMessage('Falha na criação do jogo. Verifique o console.', 'error'); // ALTERADO
     }
 }
 
