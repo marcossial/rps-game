@@ -14,62 +14,67 @@
 
     <main class="container">
         
-        <section class="admin-panel" id="user-panel">
-            <h2>Gestão de Usuários</h2>
-            <button onclick="fetchUsers()">Atualizar Lista</button>
-            <div class="actions">
-                <input type="text" id="new-username" placeholder="Nome do Novo Usuário">
-                <button onclick="createUser()">Adicionar Usuário (Simulação)</button>
-            </div>
-            
-            <table id="user-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="admin-grid"> 
+            <section class="admin-panel" id="user-panel">
+                <h2>Gestão de Usuários</h2>
+                <button onclick="fetchUsers()">Atualizar Lista</button>
+                <div class="actions">
+                    <input type="text" id="new-username" placeholder="Nome do Novo Usuário">
+                    <button onclick="createUser()">Adicionar Usuário</button>
+                </div>
+                
+                <table id="user-table" class="user-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     </tbody>
-            </table>
-        </section>
+                </table>
+            </section>
 
-        <section class="admin-panel" id="game-panel">
-            <h2>Gestão de Jogos</h2>
-            <button onclick="fetchGames()">Atualizar Lista</button>
-            
-            <div class="actions">
-                <input type="number" id="new-game-user-id" placeholder="ID do Jogador">
-                <select id="new-game-choice">
-                    <option value="ROCK">PEDRA</option>
-                    <option value="PAPER">PAPEL</option>
-                    <option value="SCISSORS">TESOURA</option>
-                </select>
-                <button onclick="createGame()">Adicionar Jogo (Simulação)</button>
-            </div>
+            <section class="admin-panel" id="game-panel">
+                <h2>Gestão de Jogos</h2>
+                
+                <div class="filter-controls">
+                    <button onclick="fetchGames()">TODOS os Jogos</button>
+                    <span id="current-filter">Filtro Atual: **TODOS**</span>
+                </div>
+                
+                <button onclick="fetchGames()">Atualizar Lista</button>
+                
+                <div class="actions">
+                    <input type="number" id="new-game-user-id" placeholder="ID do Jogador">
+                    <select id="new-game-choice">
+                        <option value="ROCK">PEDRA</option>
+                        <option value="PAPER">PAPEL</option>
+                        <option value="SCISSORS">TESOURA</option>
+                    </select>
+                    <button onclick="createGame()">Adicionar Jogo</button>
+                </div>
 
-            <table id="game-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>UserID</th>
-                        <th>Data</th>
-                        <th>Escolha</th>
-                        <th>NPC</th>
-                        <th>Resultado</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table id="game-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>UserID</th>
+                            <th>Data</th>
+                            <th>Escolha</th>
+                            <th>NPC</th>
+                            <th>Resultado</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     </tbody>
-            </table>
-        </section>
+                </table>
+            </section>
+        </div> </main>
 
-    </main>
-
-    <div id="status-message" class="container"></div>
-
+    <div id="status-message" class="container"></div> 
     <script src="admin.js"></script>
 </body>
 </html>

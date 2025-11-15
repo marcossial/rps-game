@@ -1,23 +1,18 @@
 const API_URL = 'http://localhost:8080';
 
-// --- NOVO: Função para exibir mensagens de status na tela ---
+let currentUserId = null;
 
 function displayStatusMessage(message, type = 'success') {
     const statusDiv = document.getElementById('status-message');
     statusDiv.textContent = message;
     
-    // Limpa classes anteriores e adiciona a nova
     statusDiv.className = 'container';
     statusDiv.classList.add(type, 'visible');
     
-    // Oculta a mensagem após 5 segundos
     setTimeout(() => {
         statusDiv.classList.remove('visible');
     }, 5000); 
 }
-
-
-// --- Função Auxiliar: Limpar e Criar Linhas da Tabela ---
 
 function renderTable(tableId, data, isGame) {
     const tbody = document.getElementById(tableId).querySelector('tbody');
@@ -35,7 +30,10 @@ function renderTable(tableId, data, isGame) {
         if (isGame) {
             // Colunas da tabela de Jogos
             row.insertCell().textContent = id;
+
+            const userIdText = item.user ? item.user.id : (item.userId || 'N/A (Erro)');
             row.insertCell().textContent = item.user.id;
+
             row.insertCell().textContent = new Date(item.date).toLocaleString();
             row.insertCell().textContent = item.userChoice;
             row.insertCell().textContent = item.npcChoice;
@@ -65,33 +63,79 @@ function renderTable(tableId, data, isGame) {
     });
 }
 
-// --- Funções de Leitura (GET) ---
+function renderUserTable(data) {
+    const tbody = document.getElementById('user-table').querySelector('tbody');
+    tbody.innerHTML = ''; 
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">Nenhum usuário encontrado.</td></tr>';
+        return;
+    }
+
+    data.forEach(item => {
+        const row = tbody.insertRow();
+        const id = item.id;
+        
+        row.insertCell().textContent = id;
+        row.insertCell().textContent = item.name || 'N/A';
+        
+        row.onclick = () => filterGamesByUser(id, item.name);
+
+        const actionCell = row.insertCell();
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-btn';
+        deleteButton.textContent = 'Excluir';
+        deleteButton.onclick = (e) => {
+             e.stopPropagation();
+             deleteResource('users', id);
+        };
+        actionCell.appendChild(deleteButton);
+    });
+}
+
+function filterGamesByUser(userId, userName) {
+    currentUserId = userId; // Define o novo filtro
+    document.getElementById('current-filter').innerHTML = `Filtro Atual: **${userName} (ID: ${userId})**`;
+    fetchGames(); // Recarrega os jogos com o filtro
+}
 
 async function fetchUsers() {
     try {
         const response = await fetch(`${API_URL}/users`);
         if (!response.ok) throw new Error('Falha ao carregar usuários');
         const users = await response.json();
-        renderTable('user-table', users, false);
+        renderUserTable(users);
+
+        document.getElementById('status-message').classList.remove('visible');
+
     } catch (error) {
         console.error("Erro ao buscar usuários:", error);
-        displayStatusMessage('Erro ao carregar usuários. Verifique o console.', 'error'); // ALTERADO
+        displayStatusMessage('Erro ao carregar usuários. Verifique o console.', 'error');
     }
 }
 
 async function fetchGames() {
+    const endpoint = currentUserId 
+        ? `${API_URL}/game?users/${currentUserId}`
+        : `${API_URL}/game`;
+        
+    if (!currentUserId) {
+        document.getElementById('current-filter').innerHTML = 'Filtro Atual: **TODOS**';
+    }
+
     try {
-        const response = await fetch(`${API_URL}/game`);
+        const response = await fetch(endpoint);
         if (!response.ok) throw new Error('Falha ao carregar jogos');
         const games = await response.json();
         renderTable('game-table', games, true);
+
+        document.getElementById('status-message').classList.remove('visible');
+
     } catch (error) {
         console.error("Erro ao buscar jogos:", error);
-        displayStatusMessage('Erro ao carregar jogos. Verifique o console.', 'error'); // ALTERADO
+        displayStatusMessage('Erro ao carregar jogos. Verifique o console.', 'error');
     }
 }
-
-// --- Funções de Exclusão (DELETE) ---
 
 async function deleteResource(resource, id) {
     if (!confirm(`Tem certeza que deseja excluir o ID ${id} de ${resource}?`)) {
@@ -99,14 +143,14 @@ async function deleteResource(resource, id) {
     }
     
     try {
-        const response = await fetch(`${API_URL}/${resource}/${id}`, {
+        const response = await fetch(`${API_URL}/${resource}/id/${id}`, {
             method: 'DELETE'
         });
 
         if (response.status === 204) { // 204 No Content
-            displayStatusMessage(`Recurso ID ${id} excluído com sucesso.`, 'success'); // ALTERADO
+            displayStatusMessage(`Recurso ID ${id} excluído com sucesso.`, 'success');
         } else if (response.status === 404) {
-            displayStatusMessage(`Recurso ID ${id} não encontrado.`, 'error'); // ALTERADO
+            displayStatusMessage(`Recurso ID ${id} não encontrado.`, 'error');
         } else {
             throw new Error(`Erro ${response.status} ao excluir.`);
         }
@@ -120,17 +164,14 @@ async function deleteResource(resource, id) {
 
     } catch (error) {
         console.error(`Erro ao deletar ${resource}:`, error);
-        displayStatusMessage(`Erro ao deletar: ${error.message}`, 'error'); // ALTERADO
+        displayStatusMessage(`Erro ao deletar: ${error.message}`, 'error');
     }
 }
 
-// --- Funções de Criação (POST/Simulação) ---
-
-// Simula Adicionar Usuário
 async function createUser() {
     const name = document.getElementById('new-username').value;
     if (!name) {
-        displayStatusMessage('O nome do usuário é obrigatório.', 'error'); // ALTERADO
+        displayStatusMessage('O nome do usuário é obrigatório.', 'error');
         return;
     }
 
@@ -142,7 +183,7 @@ async function createUser() {
         });
 
         if (response.status === 201) {
-            displayStatusMessage(`Usuário "${name}" adicionado com sucesso.`, 'success'); // ALTERADO
+            displayStatusMessage(`Usuário "${name}" adicionado com sucesso.`, 'success');
             document.getElementById('new-username').value = '';
             fetchUsers();
         } else {
@@ -150,17 +191,16 @@ async function createUser() {
         }
     } catch (error) {
         console.error("Erro ao criar usuário:", error);
-        displayStatusMessage('Falha na criação do usuário. Verifique o console.', 'error'); // ALTERADO
+        displayStatusMessage('Falha na criação do usuário. Verifique o console.', 'error');
     }
 }
 
-// Simula Adicionar Jogo
 async function createGame() {
     const userId = document.getElementById('new-game-user-id').value;
     const userChoice = document.getElementById('new-game-choice').value;
 
     if (!userId || !userChoice) {
-        displayStatusMessage('ID do jogador e escolha são obrigatórios.', 'error'); // ALTERADO
+        displayStatusMessage('ID do jogador e escolha são obrigatórios.', 'error');
         return;
     }
 
@@ -172,7 +212,7 @@ async function createGame() {
         });
 
         if (response.status === 201) {
-            displayStatusMessage(`Jogo para o User ID ${userId} adicionado com sucesso.`, 'success'); // ALTERADO
+            displayStatusMessage(`Jogo para o User ID ${userId} adicionado com sucesso.`, 'success');
             document.getElementById('new-game-user-id').value = '';
             fetchGames();
         } else {
@@ -182,12 +222,13 @@ async function createGame() {
         }
     } catch (error) {
         console.error("Erro ao criar jogo:", error);
-        displayStatusMessage('Falha na criação do jogo. Verifique o console.', 'error'); // ALTERADO
+        displayStatusMessage('Falha na criação do jogo. Verifique o console.', 'error');
     }
 }
 
-// Carregar dados ao iniciar a tela
 document.addEventListener('DOMContentLoaded', () => {
     fetchUsers();
-    fetchGames();
+    
+    currentUserId = null; 
+    fetchGames(); 
 });

@@ -117,3 +117,44 @@ td button.delete-btn:hover {
     visibility: visible;
     opacity: 1;
 }
+
+.admin-grid {
+    display: flex;
+    gap: 20px;
+}
+
+.admin-grid .admin-panel {
+    flex: 1;
+}
+
+#user-panel table th:nth-child(3), 
+#user-panel table td:nth-child(3) {
+    width: 100px;
+    text-align: center;
+}
+
+.user-table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.user-table tbody tr:hover {
+    background-color: #e9f5ff;
+}
+
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-controls button {
+    background-color: #007bff;
+    margin: 0;
+}
+
+#current-filter {
+    font-size: 1.1em;
+    color: #007bff;
+}
