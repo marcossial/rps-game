@@ -8,12 +8,8 @@
       <change beforePath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/Livro.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/Livro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/MainApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rps.db" beforeDir="false" afterPath="$PROJECT_DIR$/rps.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/GameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/GameService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +54,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "fix/controller",
+    "git-widget-placeholder": "fix/models",
     "last_opened_file_path": "C:/Users/AlmeidaPC/IdeaProjects/rps"
   }
 }]]></component>

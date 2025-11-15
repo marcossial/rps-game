@@ -3,6 +3,7 @@ package com.marcossial.rps.Service;
 import com.marcossial.rps.Model.Choice;
 import com.marcossial.rps.Model.Game;
 import com.marcossial.rps.Model.Result;
+import com.marcossial.rps.Model.User;
 import com.marcossial.rps.Repository.GameRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,11 @@ public class GameService {
         this.repository = repository;
     }
 
-    public Game newGame(Long userId, Choice userChoice) {
+    public Game newGame(User user, Choice userChoice) {
         Choice npcChoice = Choice.random();
         Result result = userChoice.playAgainst(npcChoice);
 
-        Game game = new Game(userId, userChoice, npcChoice, result);
+        Game game = new Game(user, userChoice, npcChoice, result);
         return repository.save(game);
     }
 

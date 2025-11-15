@@ -1,6 +1,7 @@
 package com.marcossial.rps.Model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +12,9 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Enumerated(EnumType.STRING)
     private Choice userChoice;
@@ -22,38 +25,36 @@ public class Game {
     @Enumerated(EnumType.STRING)
     private Result result;
 
+    @CreationTimestamp
     private LocalDateTime date;
 
-    public Game() {
-        this.date = LocalDateTime.now();
-    }
+    public Game() { }
 
-    public Game(Long userId, Choice userChoice, Choice npcChoice, Result result) {
-        this.userId = userId;
+    public Game(User user, Choice userChoice, Choice npcChoice, Result result) {
+        this.user = user;
         this.userChoice = userChoice;
         this.npcChoice = npcChoice;
         this.result = result;
-        this.date = LocalDateTime.now();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserChoice(Choice userChoice) {
+        this.userChoice = userChoice;
     }
 
     public Choice getUserChoice() {
         return userChoice;
     }
 
-    public void setUserChoice(Choice userChoice) {
-        this.userChoice = userChoice;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Choice getNpcChoice() {
