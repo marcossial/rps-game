@@ -135,3 +135,7 @@ h1 {
     border-color: #fdd835;
     box-shadow: 0 0 25px #fdd835, 0 0 10px rgba(255, 255, 0, 0.7);
 }
+
+.imagem-invertida {
+    transform: scaleX(-1);
+}
