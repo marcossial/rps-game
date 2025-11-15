@@ -1,7 +1,9 @@
-package com.marcossial.rps.Controller.Api;
+package com.marcossial.rps.Controller;
 
 import com.marcossial.rps.Model.User;
 import com.marcossial.rps.Service.UserService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
