@@ -28,22 +28,33 @@ public class GameController {
         return ResponseEntity.status(201).body(createdGame);
     }
 
+    /* Get by users */
+
     @GetMapping("/users/{id}/stats")
-    public Map<Result, Long> getUserStats(@PathVariable Long userId) {
-        return service.getUserStats(userId);
+    public Map<Result, Long> getUserStats(@PathVariable Long id) {
+        return service.getUserStats(id);
     }
 
     @GetMapping("/users/{id}")
     public List<Game> getUserHistory(@PathVariable Long id) {
         return service.getUserHistory(id);
     }
-    
+
     @GetMapping
     public List<Game> getAllUsersHistory(){
-    	return service.getAllUserHistory();
+        return service.getAllUserHistory();
+    }
+
+    /* Get game */
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Game> getById(@PathVariable Long id) {
+        return service.getGameById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
     	service.deleteGame(id);
     	return ResponseEntity.noContent().build();

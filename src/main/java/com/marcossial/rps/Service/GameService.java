@@ -6,10 +6,12 @@ import com.marcossial.rps.Model.Result;
 import com.marcossial.rps.Model.User;
 import com.marcossial.rps.Repository.GameRepository;
 import com.marcossial.rps.Repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,12 +61,20 @@ public class GameService {
 
     }
 
+    public Optional<Game> getGameById(Long id) {
+        return gameRepository.findById(id);
+    }
+
     public List<Game> getUserHistory(Long userId) {
         return gameRepository.findByUserIdOrderByDateDesc(userId);
     }
-    
+
+    @Transactional
     public List<Game> getAllUserHistory(){
-    	return gameRepository.findAll();
+        List<Game> games = gameRepository.findAll();
+
+        games.forEach(game -> game.getUser().getId());
+    	return games;
     }
 
     public Map<Result, Long> getUserStats(Long userId) {
