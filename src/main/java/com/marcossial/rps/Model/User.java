@@ -22,7 +22,12 @@ public class User {
         this.createdDate = LocalDateTime.now();
     }
 
-
+    /**
+     * Armazena a contagem de vitórias seguidas do usuário.
+     * É zerado se o usuário perder ou empatar.
+     */
+    @Column(name = "current_streak", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int currentStreak = 0;
 
     public User(String name, long score) {
         this.name = name;
@@ -56,5 +61,13 @@ public class User {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public int getCurrentStreak() {
+        return currentStreak;
+    }
+
+    public void setCurrentStreak(int currentStreak) {
+        this.currentStreak = currentStreak;
     }
 }

@@ -30,6 +30,12 @@ public class Game {
     @CreationTimestamp
     private LocalDateTime date;
 
+    /**
+     * Armazena qual era o streak do usuário APÓS esta partida.
+     */
+    @Column(name = "user_streak_after")
+    private int userStreak;
+
     public Game() { }
 
     public Game(User user, Choice userChoice, Choice npcChoice, Result result) {
@@ -82,4 +88,14 @@ public class Game {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    public int getUserStreak() {
+        return userStreak;
+    }
+
+    public void setUserStreak(int userStreak) {
+        this.userStreak = userStreak;
+    }
+
+
 }
