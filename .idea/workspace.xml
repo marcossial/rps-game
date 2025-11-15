@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d31cedaa-63ba-44c4-9c85-5e47ccd60e7a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/GameLogicService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/Livro.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/Livro.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaCRUD/src/main/java/com/marcossial/javacrud/MainApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rps.db" beforeDir="false" afterPath="$PROJECT_DIR$/rps.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/DTO/GameRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/DTO/GameRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/Choice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/Choice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Repository/GameRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Repository/GameRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/GameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/marcossial/rps/Service/GameService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +60,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "fix/models",
+    "git-widget-placeholder": "fix/controller",
     "last_opened_file_path": "C:/Users/AlmeidaPC/IdeaProjects/rps"
   }
 }]]></component>

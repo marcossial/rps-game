@@ -2,44 +2,48 @@ package com.marcossial.rps.Controller;
 
 import com.marcossial.rps.DTO.GameRequest;
 import com.marcossial.rps.Model.Game;
+import com.marcossial.rps.Model.Result;
 import com.marcossial.rps.Service.GameService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/game")
-@Controller
+@RestController
 public class GameController {
-    GameService service;
+    private final GameService service;
 
     GameController(GameService service) {
         this.service = service;
     }
 
     @PostMapping
-    public Game newGame(@RequestBody GameRequest req) {
-        return service.newGame(req.getUserId(), req.getUserChoice());
+    public ResponseEntity<Game> create(@Validated @RequestBody GameRequest req) {
+        Game createdGame = service.newGame(req.getUserId(), req.getUserChoice());
+        return ResponseEntity.status(201).body(createdGame);
+    }
+
+    @GetMapping("/users/{id}/stats")
+    public Map<Result, Long> getUserStats(@PathVariable Long userId) {
+        return service.getUserStats(userId);
     }
 
     @GetMapping("/users/{id}")
-    public List<Game> getUserHistory(@PathVariable long id) {
+    public List<Game> getUserHistory(@PathVariable Long id) {
         return service.getUserHistory(id);
     }
     
     @GetMapping
     public List<Game> getAllUsersHistory(){
-    	return service.geAllUserHistory();
+    	return service.getAllUserHistory();
     }
     
-    @DeleteMapping
-    public void deleteGameById (@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
     	service.deleteGame(id);
-    	
+    	return ResponseEntity.noContent().build();
     }
 }
