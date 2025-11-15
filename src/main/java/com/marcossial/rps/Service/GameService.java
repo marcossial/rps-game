@@ -33,8 +33,32 @@ public class GameService {
         Choice npcChoice = gameLogicService.generateNpcChoice();
         Result result = gameLogicService.calculateResult(userChoice, npcChoice);
 
+        // --- INÍCIO DA LÓGICA DO STREAK ---
+
+        // 3. Calcula o novo valor do streak
+        int newStreak;
+        if (result == Result.VICTORY) {
+            // Se venceu, incrementa o streak atual do usuário
+            newStreak = actualUser.getCurrentStreak() + 1;
+        } else {
+            // Se perdeu OU empatou, reseta o streak para 0
+            newStreak = 0;
+        }
+
+        // 4. Atualiza o objeto do usuário com o novo streak
+        actualUser.setCurrentStreak(newStreak);
+
+        // 5. SALVA o usuário atualizado no banco (IMPORTANTE!)
+        userRepository.save(actualUser);
+
         Game game = new Game(actualUser, userChoice, npcChoice, result);
+
+        // 7. Adiciona o streak ao objeto Game (para o front-end ver)
+        game.setUserStreak(newStreak);
+
         return gameRepository.save(game);
+
+
     }
 
     public Optional<Game> getGameById(Long id) {
