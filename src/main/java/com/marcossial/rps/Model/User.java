@@ -11,11 +11,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private String name;
 
     private long score;
 
     private LocalDateTime createdDate;
+
+    public User() {
+        this.createdDate = LocalDateTime.now();
+    }
 
     public User(String name, long score) {
         this.name = name;

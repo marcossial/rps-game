@@ -24,6 +24,10 @@ public class Game {
 
     private LocalDateTime date;
 
+    public Game() {
+        this.date = LocalDateTime.now();
+    }
+
     public Game(Long userId, Choice userChoice, Choice npcChoice, Result result) {
         this.userId = userId;
         this.userChoice = userChoice;
