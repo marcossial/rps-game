@@ -2,7 +2,7 @@ package com.marcossial.rps.Service;
 
 import com.marcossial.rps.Model.User;
 import com.marcossial.rps.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,7 +11,7 @@ import java.util.Optional;
 public class UserService {
     UserRepository repository;
 
-    @Autowired
+    
     public UserService(UserRepository repository) {
         this.repository = repository;
     }

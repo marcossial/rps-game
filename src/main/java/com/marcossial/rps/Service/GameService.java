@@ -4,7 +4,6 @@ import com.marcossial.rps.Model.Choice;
 import com.marcossial.rps.Model.Game;
 import com.marcossial.rps.Model.Result;
 import com.marcossial.rps.Repository.GameRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.stream.Collectors;
 public class GameService {
     GameRepository repository;
 
-    @Autowired
+    
     public GameService(GameRepository repository) {
         this.repository = repository;
     }
@@ -30,6 +29,10 @@ public class GameService {
 
     public List<Game> getUserHistory(long userId) {
         return repository.findUserByUserIdOrderByDateDesc(userId);
+    }
+    
+    public List<Game> geAllUserHistory(){
+    	return repository.findAll();
     }
 
     public Map<Result, Long> getUserStats(Long userId) {
