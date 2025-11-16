@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPS Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Acessar Jogo (RPS)</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <label for="username">Nome de Usuário:</label>
+                <input type="text" id="username" required placeholder="Digite seu nome">
+            </div>
+            
+            <button type="submit">Entrar e Jogar</button>
+        </form>
+        
+        <p id="status-message" class="hidden"></p>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

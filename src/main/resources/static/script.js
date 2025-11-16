@@ -15,26 +15,68 @@ const botaoPedra = document.getElementById("pedra");
 const botaoPapel = document.getElementById("papel");
 const botaoTesoura = document.getElementById("tesoura");
 
-// --- VARIÁVEIS DE CONFIGURAÇÃO ---
 const EXTENSAO_IMAGEM = ".png";
-const USUARIO_ID = 1; // ID do Usuário Logado (Simulado)
+let usuario_id = null;
 
-// Placar local (mantido para exibição, mas o placar real deve vir da API/DB em uma aplicação completa)
 let placarJogador = 0;
 let placarComputador = 0;
-// ---------------------------------
 
-// Adiciona "escutadores" de evento para cada botão
 botaoPedra.addEventListener("click", () => jogar("ROCK"));
 botaoPapel.addEventListener("click", () => jogar("PAPER"));
 botaoTesoura.addEventListener("click", () => jogar("SCISSORS"));
 
-// -----------------------------------------------------------
-// FUNÇÃO PRINCIPAL: DELEGA A LÓGICA DO JOGO PARA O BACKEND
-// -----------------------------------------------------------
+async function fetchUserData() {
+    if (!usuario_id) return;
+    
+    try {
+        const response = await fetch(`${API_URL}/users/id/${usuario_id}`);
+        
+        if (!response.ok) {
+            throw new Error(`Falha ao carregar dados do usuário. Status: ${response.status}`);
+        }
+        
+        const userData = await response.json();
+        
+        const userName = userData.name || 'Jogador';
+        const userStreak = userData.userStreak || 0;
+        
+        mensagemFinal.textContent = `Bem-vindo(a), ${userName}! Escolha sua jogada.`;
+        placarStreak.textContent = userStreak;
+
+        if (userStreak >= 3) {
+            placarStreak.style.color = "gold";
+            bgBody.style.backgroundColor = "#f0b160";
+        }
+
+    } catch (error) {
+        console.error("Erro ao carregar dados iniciais:", error);
+        mensagemFinal.textContent = "Erro ao carregar dados iniciais do usuário.";
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  usuario_id = urlParams.get('userId');
+
+  if (!usuario_id) {
+    usuario_id = localStorage.getItem('rps_userId');
+  }
+
+  if (usuario_id) {
+    localStorage.setItem('rps_userId', usuario_id);
+    fetchUserData();
+  } else {
+    alert('Sessão expirada ou não iniciada. Por favor, faça login.');
+    window.location.href = 'login.html';
+  }
+});
 
 async function jogar(escolhaUsuario) {
-  // 1. Remove qualquer brilho anterior e prepara a tela
+  if (!usuario_id) {
+    mensagemFinal.textContent = "Erro: Usuário não logado.";
+    return;
+  }
+
   areaJogador.classList.remove("vencedor");
   areaComputador.classList.remove("vencedor");
   mensagemFinal.textContent = "Aguardando API...";
@@ -44,12 +86,13 @@ async function jogar(escolhaUsuario) {
 
   // 2. Monta o DTO (enviando apenas o que é obrigatório)
   const gameRequest = {
-    userId: USUARIO_ID,
+    userId: Number(usuario_id),
     userChoice: escolhaUsuario,
   };
 
   try {
     // 3. Faz a chamada POST para o backend
+    console.log(`usuario_id:${usuario_id}`);
     const response = await fetch(`${API_URL}/game`, {
       method: "POST",
       headers: {
@@ -67,7 +110,7 @@ async function jogar(escolhaUsuario) {
     const gameSalvo = await response.json();
 
     // As escolhas e o resultado já vêm calculados do servidor
-    const escolhaComputador = gameSalvo.npcChoice.toLowerCase();
+    const escolhaComputador = gameSalvo.npcChoice;
     const resultadoApi = gameSalvo.result;
 
     //placar streak
@@ -102,7 +145,6 @@ async function jogar(escolhaUsuario) {
  */
 function processarResultado(resultadoApi, streakAtual) {
   let mensagem = "";
-  let vencedor = "";
 
   // Remove classes anteriores
   areaJogador.classList.remove("vencedor");
