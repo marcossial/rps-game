@@ -26,6 +26,7 @@ public class GameService {
         this.gameLogicService = gameLogicService;
     }
 
+    @Transactional
     public Game newGame(Long userId , Choice userChoice) {
         User actualUser = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found. ID: " + userId));
@@ -33,13 +34,19 @@ public class GameService {
         Choice npcChoice = gameLogicService.generateNpcChoice();
         Result result = gameLogicService.calculateResult(userChoice, npcChoice);
 
-        int newStreak;
+        int newStreak = actualUser.getCurrentStreak();
+        long scoreChange = 0;
         if (result == Result.VICTORY) {
-            newStreak = actualUser.getCurrentStreak() + 1;
+            newStreak++;
+            scoreChange = (long) (10 * Math.pow(2, newStreak - 1));
+        } else if (result == Result.DEFEAT) {
+            newStreak = 0;
+            scoreChange = -5;
         } else {
             newStreak = 0;
         }
         actualUser.setCurrentStreak(newStreak);
+        actualUser.setScore(actualUser.getScore() + scoreChange);
         userRepository.save(actualUser);
 
         Game game = new Game(actualUser, userChoice, npcChoice, result);

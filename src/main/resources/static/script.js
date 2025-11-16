@@ -4,6 +4,7 @@ const API_URL = "http://localhost:8080";
 const mensagemFinal = document.getElementById("mensagem-final");
 const imagemJogador = document.getElementById("imagem-jogador");
 const imagemComputador = document.getElementById("imagem-computador");
+const placarScoreSpan = document.getElementById("placar-score");
 const placarJogadorSpan = document.getElementById("placar-jogador");
 const placarComputadorSpan = document.getElementById("placar-computador");
 const placarStreak = document.getElementById("streak-jogador");
@@ -38,10 +39,12 @@ async function fetchUserData() {
         const userData = await response.json();
         
         const userName = userData.name || 'Jogador';
-        const userStreak = userData.userStreak || 0;
+        const userStreak = userData.currentStreak || 0;
+        const userScore = userData.score;
         
         mensagemFinal.textContent = `Bem-vindo(a), ${userName}! Escolha sua jogada.`;
         placarStreak.textContent = userStreak;
+        placarScoreSpan.textContent = userScore;
 
         if (userStreak >= 3) {
             placarStreak.style.color = "gold";
@@ -81,17 +84,15 @@ async function jogar(escolhaUsuario) {
   areaComputador.classList.remove("vencedor");
   mensagemFinal.textContent = "Aguardando API...";
 
-  imagemJogador.style.opacity = 0.5; // Efeito de carregamento
+  imagemJogador.style.opacity = 0.5;
   imagemComputador.style.opacity = 0.5;
 
-  // 2. Monta o DTO (enviando apenas o que é obrigatório)
   const gameRequest = {
     userId: Number(usuario_id),
     userChoice: escolhaUsuario,
   };
 
   try {
-    // 3. Faz a chamada POST para o backend
     console.log(`usuario_id:${usuario_id}`);
     const response = await fetch(`${API_URL}/game`, {
       method: "POST",
@@ -106,30 +107,24 @@ async function jogar(escolhaUsuario) {
       throw new Error(`Erro API ${response.status}: ${await response.text()}`);
     }
 
-    // 4. Recebe o objeto Game completo da API
     const gameSalvo = await response.json();
 
-    // As escolhas e o resultado já vêm calculados do servidor
+    const userResponse = await fetch(`${API_URL}/users/id/${usuario_id}`);
+    const userDataAtualizado = await userResponse.json();
+    const scoreAtual = userDataAtualizado.score || 0;
+    const streakAtual = userDataAtualizado.currentStreak || 0;
+
     const escolhaComputador = gameSalvo.npcChoice;
     const resultadoApi = gameSalvo.result;
 
-    //placar streak
-    const streakAtual = gameSalvo.userStreak;
-    placarStreak.textContent = streakAtual;
-
-    // 5. ATUALIZA A TELA COM OS DADOS DA API
-
-    // Mostra as imagens
     imagemJogador.src = `${escolhaUsuario}${EXTENSAO_IMAGEM}`;
     imagemComputador.src = `${escolhaComputador}${EXTENSAO_IMAGEM}`;
     imagemJogador.style.opacity = 1;
     imagemComputador.style.opacity = 1;
 
-    // adicionar o imagem invertida
     imagemComputador.classList.add("imagem-invertida");
 
-    // Processa o resultado e atualiza o placar
-    processarResultado(resultadoApi, streakAtual);
+    processarResultado(resultadoApi, streakAtual, scoreAtual);
   } catch (error) {
     mensagemFinal.textContent = "Erro ao conectar à API.";
     console.error("Erro no processo de jogo:", error);
@@ -139,11 +134,13 @@ async function jogar(escolhaUsuario) {
 // -----------------------------------------------------------
 // FUNÇÕES DE PROCESSAMENTO
 // -----------------------------------------------------------
-
 /**
- * Processa o resultado da API (WIN, LOSS, DRAW) e atualiza o placar e brilhos.
+ * Processa o resultado da API (VICTORY, DEFEAT, DRAW) e atualiza o placar e brilhos.
+ * @param {string} resultadoApi - O resultado retornado pela API (VICTORY, DEFEAT, DRAW).
+ * @param {number} streakAtual - O streak atualizado do usuário.
+ * @param {number} scoreAtual - O score total atualizado do usuário.
  */
-function processarResultado(resultadoApi, streakAtual) {
+function processarResultado(resultadoApi, streakAtual, scoreAtual) {
   let mensagem = "";
 
   // Remove classes anteriores
@@ -161,11 +158,13 @@ function processarResultado(resultadoApi, streakAtual) {
     vencedor = "computador";
     areaComputador.classList.add("vencedor");
     placarComputador++;
-  } else {
-    // DRAW
+  } else { // DRAW
     mensagem = "Empate!";
     vencedor = "empate";
   }
+
+  placarStreak.textContent = streakAtual;
+  placarScoreSpan.textContent = scoreAtual;
 
   if (streakAtual >= 3) {
     mensagemFinal.style.color = "black";
@@ -180,9 +179,7 @@ function processarResultado(resultadoApi, streakAtual) {
   }
 
   mensagemFinal.textContent = mensagem;
+  
   placarJogadorSpan.textContent = placarJogador;
   placarComputadorSpan.textContent = placarComputador;
 }
-
-// Removidas as funções getEscolhaComputador e determinarVencedor
-// pois a lógica agora está no GameLogicService (Backend)
