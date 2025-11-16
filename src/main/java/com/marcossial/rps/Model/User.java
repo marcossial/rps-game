@@ -1,8 +1,10 @@
 package com.marcossial.rps.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,21 +20,29 @@ public class User {
 
     private LocalDateTime createdDate;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Game> games;
+
+    @Column(name = "current_streak", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int currentStreak = 0;
+
     public User() {
         this.createdDate = LocalDateTime.now();
     }
-
-    /**
-     * Armazena a contagem de vitórias seguidas do usuário.
-     * É zerado se o usuário perder ou empatar.
-     */
-    @Column(name = "current_streak", nullable = false, columnDefinition = "INT DEFAULT 0")
-    private int currentStreak = 0;
 
     public User(String name, long score) {
         this.name = name;
         this.score = score;
         this.createdDate = LocalDateTime.now();
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 
     public long getId() {
