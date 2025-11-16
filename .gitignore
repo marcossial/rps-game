@@ -16,6 +16,7 @@ logs/
 *.jar
 *.war
 *.ear
+rps.db
 
 ### STS ###
 .apt_generated
