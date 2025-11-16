@@ -1,50 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pedra, Papel e Tesoura</title>
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body id="body">
+</head>
+<body id="body">
+    <div id="floating-score">0</div>
+
     <h1>Pedra, Papel ou Tesoura?</h1>
 
     <div class="opcoes">
-      <button id="pedra">
-        <img src="ROCK.png" alt="Pedra" />
-      </button>
-      <button id="papel">
-        <img src="PAPER.png" alt="Papel" />
-      </button>
-      <button id="tesoura">
-        <img src="SCISSORS.png" alt="Tesoura" />
-      </button>
+        <button id="pedra">
+            <img src="ROCK.png" alt="Pedra" />
+        </button>
+        <button id="papel">
+            <img src="PAPER.png" alt="Papel" />
+        </button>
+        <button id="tesoura">
+            <img src="SCISSORS.png" alt="Tesoura" />
+        </button>
     </div>
 
+    <div id="score-animation-container"></div> 
+
     <div class="resultado-combate">
-      <h2 id="mensagem-final"></h2>
-      <p>Score Total: <span id="placar-score">0</span></p>
-      <p>Sua pontuação: <span id="placar-jogador">0</span></p>
-      <p>Streak de vitorias: <span id="streak-jogador">0</span></p>
-      <p>Pontuação do computador: <span id="placar-computador">0</span></p>
+        <h2 id="mensagem-final"></h2>
+        <p>Sua pontuação: <span id="placar-jogador">0</span></p>
+        <p>Streak de vitorias: <span id="streak-jogador">0</span></p>
+        <p>Pontuação do computador: <span id="placar-computador">0</span></p>
     </div>
 
     <div class="combate">
-      <div class="jogador-area">
-        <h2>Você</h2>
-        <img id="imagem-jogador" src="" alt="Sua escolha" />
-      </div>
+        <div class="jogador-area">
+            <h2>Você</h2>
+            <img id="imagem-jogador" src="" alt="Sua escolha" />
+        </div>
 
-      <div class="vs-texto">
-        <h1>X</h1>
-      </div>
+        <div class="vs-texto">
+            <h1>X</h1>
+        </div>
 
-      <div class="computador-area">
-        <h2>Computador</h2>
-        <img id="imagem-computador" src="" alt="Escolha do computador" />
-      </div>
+        <div class="computador-area">
+            <h2>Computador</h2>
+            <img id="imagem-computador" src="" alt="Escolha do computador" />
+        </div>
     </div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
