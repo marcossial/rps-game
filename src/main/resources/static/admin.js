@@ -68,7 +68,7 @@ function renderUserTable(data) {
     tbody.innerHTML = ''; 
 
     if (!data || data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3">Nenhum usuário encontrado.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5">Nenhum usuário encontrado.</td></tr>';
         return;
     }
 
@@ -79,15 +79,29 @@ function renderUserTable(data) {
         row.insertCell().textContent = id;
         row.insertCell().textContent = item.name || 'N/A';
         
+        row.insertCell().textContent = item.score || 0; 
+        row.insertCell().textContent = item.currentStreak || 0; 
+        
         row.onclick = () => filterGamesByUser(id, item.name);
 
         const actionCell = row.insertCell();
+        
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Editar';
+        editButton.onclick = (e) => {
+            e.stopPropagation();
+            updateUserName(id, item.name); 
+        };
+        editButton.style.backgroundColor = '#ffc107';
+        editButton.style.marginRight = '5px';
+        actionCell.appendChild(editButton);
+
         const deleteButton = document.createElement('button');
         deleteButton.className = 'delete-btn';
         deleteButton.textContent = 'Excluir';
         deleteButton.onclick = (e) => {
-             e.stopPropagation();
-             deleteResource('users', id);
+            e.stopPropagation();
+            deleteResource('users', id);
         };
         actionCell.appendChild(deleteButton);
     });
@@ -139,6 +153,33 @@ async function fetchGames() {
     } catch (error) {
         console.error("Erro ao buscar jogos:", error);
         displayStatusMessage('Erro ao carregar jogos. Verifique o console.', 'error');
+    }
+}
+
+async function updateUserName(id, currentName) {
+    const newName = prompt(`Digite o novo nome para o usuário ID ${id}:`, currentName);
+    
+    if (!newName || newName === currentName) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/users/id/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: newName }) 
+        });
+
+        if (response.ok) {
+            displayStatusMessage(`Nome do usuário ID ${id} atualizado para "${newName}".`, 'success');
+            fetchUsers();
+        } else {
+            const errorText = await response.text();
+            throw new Error(`Erro ${response.status}: ${errorText}`);
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar usuário:", error);
+        displayStatusMessage(`Falha ao atualizar nome: ${error.message.substring(0, 100)}...`, 'error');
     }
 }
 
